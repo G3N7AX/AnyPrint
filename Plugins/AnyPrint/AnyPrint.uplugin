@@ -1,0 +1,34 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "AnyPrint",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "G3N7AX",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "AnyPrintConfig",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "AnyPrintEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
+		},
+        {
+          "Name": "AnyPrintLibrary",
+          "Type": "Runtime",
+          "LoadingPhase": "Default"
+        }
+	]
+}
