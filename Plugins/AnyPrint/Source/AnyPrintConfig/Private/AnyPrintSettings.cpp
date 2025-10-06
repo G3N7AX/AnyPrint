@@ -28,20 +28,18 @@ void UAnyPrintSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyCh
 	if (ChangedSetting == GET_MEMBER_NAME_CHECKED(UAnyPrintSettings, LogTextSize) && bUnifyTextSizes == true)
 	{
 		UnifyDetailTextSize();
-
-		UE_LOG(LogTemp, Warning, TEXT("Detail Text Unified: %f"), DetailTextSize);
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Detail Text Unified was not changed"));
-	}
-	
-	UE_LOG(LogTemp, Warning, TEXT("Settings Changed"));
 }
 
 void UAnyPrintSettings::UnifyLogTextSize()
 {
-	
+	LogTextSize = DetailTextSize * 1.5f;
+	LogTextSize = FMath::RoundToFloat(LogTextSize * 2.0f) / 2.0f;
+
+	if (LogTextSize < 12.f)
+	{
+		LogTextSize = 12.f;
+	}
 }
 
 
@@ -53,8 +51,6 @@ void UAnyPrintSettings::UnifyDetailTextSize()
 	if (DetailTextSize < 8.f)
 	{
 		DetailTextSize = 8.f;
-
-		UE_LOG(LogTemp, Log, TEXT("LogTextSize: %f"), DetailTextSize);
 	}
 }
 

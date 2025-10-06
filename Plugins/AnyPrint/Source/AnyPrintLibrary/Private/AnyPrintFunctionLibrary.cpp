@@ -40,34 +40,15 @@ TArray<FName> UAnyPrintFunctionLibrary::GetCategoryKeys() const
 FText UAnyPrintFunctionLibrary::CreateTimeStamp()
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
-
-	FText TimeStamp;
-
-	int Hour, Minute, Second;
 	
 	const FDateTime Now = FDateTime::Now();
 
-	if (Settings->bUse12hrTimeStamp == false)
-	{
-		Hour = Now.GetHour();
-		Minute = Now.GetMinute();
-		Second = Now.GetSecond();
+	int32 Hour = Settings->bUse12hrTimeStamp ? Now.GetHour() : Now.GetHour12();
+	int32 Minute = Now.GetMinute();
+	int32 Second = Now.GetSecond();
 
-		const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
-	
-		TimeStamp = FText::FromString(TimeStampString);
-	}
-	
-	else
-	{
-		Hour = Now.GetHour12();
-		Minute = Now.GetMinute();
-		Second = Now.GetSecond();
-
-		const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
-	
-		TimeStamp = FText::FromString(TimeStampString);
-	}
+	const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
+	const FText TimeStamp = FText::FromString(TimeStampString);
 
 	return TimeStamp;
 }
@@ -75,9 +56,7 @@ FText UAnyPrintFunctionLibrary::CreateTimeStamp()
 FColor UAnyPrintFunctionLibrary::GetCategoryColor(FName Category)
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
-	
 	const FColor Color = Settings->Categories.FindRef(Category);
-
 	return Color;
 }
 
@@ -90,6 +69,4 @@ void UAnyPrintFunctionLibrary::BuildLogStruct(FText TimeStamp, FText Log, FText 
 	LogInfo.Color = Color;
 
 	OnLogCreated.ExecuteIfBound(LogInfo);
-
-	UE_LOG(LogTemp, Warning, TEXT("Log Sent"));
 }

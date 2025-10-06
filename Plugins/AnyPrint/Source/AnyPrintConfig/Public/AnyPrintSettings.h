@@ -20,19 +20,40 @@ public:
 
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent);
 
-	UPROPERTY(Config, EditAnywhere, meta = (DisplayName = "Log Text Size"))
-	float LogTextSize = 16.f;
+	UPROPERTY(Config, EditAnywhere, meta = (
+		Category = "Appearance",
+		DisplayName = "Log Text Size",
+		ToolTip = "Default: 12"))
+	float LogTextSize = 12.f;
 	
-	UPROPERTY(Config, EditAnywhere, meta = (DisplayName = "Detail Text Size"))
+	UPROPERTY(Config, EditAnywhere, meta = (
+		Category = "Appearance",
+		DisplayName = "Detail Text Size"))
 	float DetailTextSize;
 
-	UPROPERTY(Config, EditAnywhere, meta =
-		(DisplayName = "Use 12hr TimeStamp" ,ToolTip = "This option determines if a 12hr or 24hr time format will be used for TimeStamps"))
+	UPROPERTY(Config, EditAnywhere, meta =(
+		Category = "Appearance",
+		DisplayName = "Wrap Log Text",
+		ToolTip = "When enabled, the Log Text Block will wrap the text if it exceeds the boundaries of the Console."))
+	bool bWrapLogText = false;
+	
+	UPROPERTY(Config, EditAnywhere, meta =(
+		Category = "Appearance",
+		DisplayName = "Use 12hr TimeStamp",
+		ToolTip = "When enabled, TimeStamps are created in 12hr format."))
 	bool bUse12hrTimeStamp = false;
 
-	UPROPERTY(Config, EditAnywhere, meta =
-		(DisplayName = "Unify Text Sizes" ,ToolTip = "This option determines if the Detail Text Size will be manually or automatically set. ON will automatically make the default Detail Text Size half of what the Log Text Size is (min: 8)."))
+	UPROPERTY(Config, EditAnywhere, meta =(
+		Category = "Appearance",
+		DisplayName = "Unify Text Sizes",
+		ToolTip = "When enabled, both Log Text Size and Detail Text Size will scale together, with Detail Text Size always set to roughly two-thirds of Log Text Size. When disabled, text sizes can be set manually and are no longer linked."))
 	bool bUnifyTextSizes = true;
+
+	UPROPERTY(Config, EditAnywhere, meta = (
+		Category = "Appearance",
+		DisplayName = "Max Log Count",
+		Tooltip = "The maximum amount of logs that the Console can hold (Default: 1000)"))
+	int32 MaxLogCount = 1000;
 
 	UPROPERTY(Config, EditAnywhere)
 	TMap<FName, FColor> Categories;

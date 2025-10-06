@@ -17,33 +17,41 @@ void UAnyPrintConsole::NativePreConstruct()
 	
 	ClearLogsButton->OnClicked.AddUniqueDynamic(this, &UAnyPrintConsole::OnClearLogs);
 	
-	if (UAnyPrintFunctionLibrary::OnLogCreated.IsBound() && ClearLogsButton->OnClicked.IsBound())
+	if (!UAnyPrintFunctionLibrary::OnLogCreated.IsBound() && ClearLogsButton->OnClicked.IsBound())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Delegates Bound"));
+		UE_LOG(LogTemp, Warning, TEXT("DELEGATES ARE NOT BOUND!"));
+		UE_LOG(LogTemp, Warning, TEXT("If you've just opened the Console for the first time, try restarting the editor. If you don't see this warning after that then you're good to go."));
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Delegates Not Bound"));
-	}
-
 }
 
 void UAnyPrintConsole::OnLogReceived(FLogInfo LogInfo)
 {
 	LogEntries.Add(LogInfo);
-
-	UE_LOG(LogTemp, Warning, TEXT("Log Received by Listener"));
-	UE_LOG(LogTemp, Warning, TEXT("%s | %s | %s | %s"), *LogInfo.TimeStamp.ToString(), *LogInfo.Log.ToString(), *LogInfo.Category.ToString(), *LogInfo.Color.ToString());
 	
 	CreateLogWidget(LogInfo);
 }
 
 void UAnyPrintConsole::CreateLogWidget(FLogInfo LogInfo)
 {
-	UAnyPrintWidget* LogWidget = CreateWidget<UAnyPrintWidget>(this, LogWidgetClass);
-	LogScrollBox->AddChild(LogWidget);
+	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
+	
+	if (LogScrollBox->GetChildrenCount() <= Settings->MaxLogCount)
+	{
+		UAnyPrintWidget* LogWidget = CreateWidget<UAnyPrintWidget>(this, LogWidgetClass);
+		LogScrollBox->AddChild(LogWidget);
 
-	LogWidget->PopulateWidget(LogInfo);
+		LogWidget->PopulateWidget(LogInfo);
+	}
+	
+	else
+	{
+		LogScrollBox->RemoveChildAt(0);
+
+		UAnyPrintWidget* LogWidget = CreateWidget<UAnyPrintWidget>(this, LogWidgetClass);
+		LogScrollBox->AddChild(LogWidget);
+
+		LogWidget->PopulateWidget(LogInfo);
+	}
 	
 	LogScrollBox->ScrollToEnd();
 }
@@ -51,7 +59,6 @@ void UAnyPrintConsole::CreateLogWidget(FLogInfo LogInfo)
 void UAnyPrintConsole::OnClearLogs()
 {
 	LogScrollBox->ClearChildren();
-
 	LogEntries.Empty();
 }
 

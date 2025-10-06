@@ -28,4 +28,9 @@ void UAnyPrintWidget::PopulateWidget(FLogInfo LogInfo)
 	CategoryTextBlock->SetFont(SecondaryFontInfo);
 
 	LogTextBlock->SetColorAndOpacity(LogColor);
+
+	if (Settings->bWrapLogText)
+	{
+		LogTextBlock->SetAutoWrapText(true);
+	}
 }

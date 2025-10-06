@@ -26,7 +26,7 @@ public:
 
 	/* Public Variables */
 	TArray<FLogInfo> LogEntries;
-
+	
 	UPROPERTY(meta = (BindWidget))
 	UScrollBox* LogScrollBox;
 
