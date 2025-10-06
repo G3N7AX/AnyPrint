@@ -5,6 +5,11 @@
 
 UAnyPrintSettings::UAnyPrintSettings()
 {
+	if (bUnifyTextSizes == true)
+	{
+		DetailTextSize = FMath::RoundToFloat(DetailTextSize * 2.0f) / 2.0f;
+	}
+	
 	if (Categories.IsEmpty())
 	{
 		Categories.Add(TEXT("Low"), FColor::White);
@@ -20,17 +25,36 @@ void UAnyPrintSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyCh
 
 	const FName ChangedSetting = PropertyChangedEvent.Property ? PropertyChangedEvent.GetPropertyName() : NAME_None;
 
-	if (ChangedSetting == GET_MEMBER_NAME_CHECKED(UAnyPrintSettings, LogTextSize))
+	if (ChangedSetting == GET_MEMBER_NAME_CHECKED(UAnyPrintSettings, LogTextSize) && bUnifyTextSizes == true)
 	{
-		DetailTextSize = LogTextSize / 2;
+		UnifyDetailTextSize();
 
-		if (DetailTextSize < 8.f)
-		{
-			DetailTextSize = 8.f;
-
-			UE_LOG(LogTemp, Log, TEXT("LogTextSize: %f"), DetailTextSize);
-		}
+		UE_LOG(LogTemp, Warning, TEXT("Detail Text Unified: %f"), DetailTextSize);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Detail Text Unified was not changed"));
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("Settings Changed"));
 }
+
+void UAnyPrintSettings::UnifyLogTextSize()
+{
+	
+}
+
+
+void UAnyPrintSettings::UnifyDetailTextSize()
+{
+	DetailTextSize = LogTextSize / 1.5f;
+	DetailTextSize = FMath::RoundToFloat(DetailTextSize * 2.0f) / 2.0f;;
+
+	if (DetailTextSize < 8.f)
+	{
+		DetailTextSize = 8.f;
+
+		UE_LOG(LogTemp, Log, TEXT("LogTextSize: %f"), DetailTextSize);
+	}
+}
+

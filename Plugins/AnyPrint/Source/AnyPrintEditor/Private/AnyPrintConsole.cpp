@@ -5,6 +5,7 @@
 #include "AnyPrintConfig/Public/AnyPrintSettings.h"
 #include "AnyPrintLibrary/Public/AnyPrintFunctionLibrary.h"
 #include "Components/Button.h"
+#include "Components/ComboBoxKey.h"
 #include "Components/ScrollBox.h"
 
 
@@ -24,6 +25,7 @@ void UAnyPrintConsole::NativePreConstruct()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Delegates Not Bound"));
 	}
+
 }
 
 void UAnyPrintConsole::OnLogReceived(FLogInfo LogInfo)
@@ -52,3 +54,4 @@ void UAnyPrintConsole::OnClearLogs()
 
 	LogEntries.Empty();
 }
+

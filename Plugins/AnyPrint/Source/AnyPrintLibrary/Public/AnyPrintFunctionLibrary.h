@@ -56,6 +56,8 @@ public:
 		FString Log
 		);
 
+	// static TArray<FName> GetCategoryKeys();
+	
 	UFUNCTION()
 	TArray<FName> GetCategoryKeys() const;
 

@@ -16,11 +16,8 @@ void UAnyPrintFunctionLibrary::PrintAnything(FName SelectedCategory, FString Log
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *Log);
 
 	FColor Color = GetCategoryColor(SelectedCategory);
-
 	FText TimeStamp = CreateTimeStamp();
-
 	FText LogText = FText::FromString(Log);
-
 	FText Category = FText::FromString(SelectedCategory.ToString());
 	
 	BuildLogStruct(TimeStamp, LogText, Category, Color);
@@ -42,15 +39,35 @@ TArray<FName> UAnyPrintFunctionLibrary::GetCategoryKeys() const
 
 FText UAnyPrintFunctionLibrary::CreateTimeStamp()
 {
+	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
+
+	FText TimeStamp;
+
+	int Hour, Minute, Second;
+	
 	const FDateTime Now = FDateTime::Now();
 
-	int Hour = Now.GetHour();
-	int Minute = Now.GetMinute();
-	int Second = Now.GetSecond();
+	if (Settings->bUse12hrTimeStamp == false)
+	{
+		Hour = Now.GetHour();
+		Minute = Now.GetMinute();
+		Second = Now.GetSecond();
 
-	const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
+		const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
 	
-	const FText TimeStamp = FText::FromString(TimeStampString);
+		TimeStamp = FText::FromString(TimeStampString);
+	}
+	
+	else
+	{
+		Hour = Now.GetHour12();
+		Minute = Now.GetMinute();
+		Second = Now.GetSecond();
+
+		const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
+	
+		TimeStamp = FText::FromString(TimeStampString);
+	}
 
 	return TimeStamp;
 }

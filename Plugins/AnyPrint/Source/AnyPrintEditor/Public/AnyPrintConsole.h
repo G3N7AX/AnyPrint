@@ -45,4 +45,7 @@ public:
 	
 	UFUNCTION()
 	void OnClearLogs();
+
+private:
+	
 };
