@@ -147,4 +147,3 @@ void UAnyPrintManager::ResizeLogScrollBox()
 		UpdateLogScrollBox();
 	}
 }
-

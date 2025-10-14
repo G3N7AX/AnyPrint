@@ -31,7 +31,6 @@ void UAnyPrintMenu::BindOptions()
 	MaxLogCountTextBox->OnTextCommitted.AddDynamic(this, &UAnyPrintMenu::OnMaxLogCountChanged);
 }
 
-
 void UAnyPrintMenu::GetDefaultOptions()
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
@@ -50,7 +49,7 @@ void UAnyPrintMenu::GetDefaultOptions()
 	DetailsTextSizeTextBox->SetJustification(ETextJustify::Center);
 
 	ConsoleTextSizeTextBox->SetMinDesiredWidth(50.f);
-	ConsoleTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Settings->ConsoleTextSize)));
+	// ConsoleTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Settings->ConsoleTextSize)));
 	ConsoleTextSizeTextBox->SetJustification(ETextJustify::Center);
 
 	MaxLogCountTextBox->SetMinDesiredWidth(50.f);
@@ -104,6 +103,18 @@ void UAnyPrintMenu::OnLogTextChanged(const FText& Text, ETextCommit::Type Commit
 	if (LogTextSize < 12.f)
 	{
 		LogTextSize = 12.f;
+
+		LogTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), LogTextSize)));
+	}
+	else if (LogTextSize > 60.f)
+	{
+		LogTextSize = 60.f;
+
+		LogTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), LogTextSize)));
+	}
+	else
+	{
+		LogTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), LogTextSize)));
 	}
 	
 	Settings->LogTextSize = LogTextSize;
@@ -129,6 +140,18 @@ void UAnyPrintMenu::OnDetailsTextChanged(const FText& Text, ETextCommit::Type Co
 	if (DetailsTextSize < 8.f)
 	{
 		DetailsTextSize = 8.f;
+
+		DetailsTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), DetailsTextSize)));
+	}
+	else if (DetailsTextSize > 40.f)
+	{
+		DetailsTextSize = 40.f;
+
+		DetailsTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), DetailsTextSize)));
+	}
+	else
+	{
+		DetailsTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), DetailsTextSize)));
 	}
 	
 	Settings->DetailsTextSize = DetailsTextSize;
@@ -159,12 +182,24 @@ void UAnyPrintMenu::OnMaxLogCountChanged(const FText& Text, ETextCommit::Type Co
 {
 	UAnyPrintSettings* Settings = GetMutableDefault<UAnyPrintSettings>();
 
-	FString MaxLogCount = Text.ToString();
+	FString MaxLogCountStr = Text.ToString();
 	
-	Settings->MaxLogCount = FCString::Atoi(*MaxLogCount);
+	int32 MaxLogCount = FCString::Atoi(*MaxLogCountStr);
 
-	// UAnyPrintFunctionLibrary::PrintAnything(FName("Medium"), MaxLogCount);
+	if (MaxLogCount > 2000)
+	{
+		MaxLogCount = 2000;
+		Settings->MaxLogCount = MaxLogCount;
 
+		MaxLogCountTextBox->SetText(FText::FromString(FString::Printf(TEXT("%i"), MaxLogCount)));
+	}
+	else if (MaxLogCount <= 0)
+	{
+		MaxLogCount = 100;
+		
+		MaxLogCountTextBox->SetText(FText::FromString(FString::Printf(TEXT("%i"), MaxLogCount)));
+	}
+	
 	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
 	LogManager->ResizeLogScrollBox();
@@ -181,7 +216,7 @@ void UAnyPrintMenu::UnifyLogTextSize()
 		Settings->LogTextSize = 12.f;	
 	}
 
-	LogTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.2f"), Settings->LogTextSize)));
+	LogTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Settings->LogTextSize)));
 
 	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
