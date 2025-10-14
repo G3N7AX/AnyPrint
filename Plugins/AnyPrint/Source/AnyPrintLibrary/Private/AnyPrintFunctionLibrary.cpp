@@ -2,71 +2,82 @@
 
 
 #include "AnyPrintFunctionLibrary.h"
-#include "AnyPrintSettings.h"
+
+#include <ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/include/dxc/DXIL/DxilConstants.h>
+
+#include "AnyPrintConfig/Public/AnyPrintSettings.h"
 #include "Misc/DateTime.h"
 
-/* Initialize Struct */
-FLogInfo UAnyPrintFunctionLibrary::LogInfo = FLogInfo();
+FLogInfo UAnyPrintFunctionLibrary::LogInfo;
+FOnLogCreated UAnyPrintFunctionLibrary::OnLogCreated;
 
-/* Initialize Struct */
-FOnLogCreated UAnyPrintFunctionLibrary::OnLogCreated = FOnLogCreated();
-
-void UAnyPrintFunctionLibrary::PrintAnything(FName SelectedCategory, FString Log)
+void UAnyPrintFunctionLibrary::PrintAnything(FName Category, FString Log)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *Log);
-
-	FColor Color = GetCategoryColor(SelectedCategory);
-	FText TimeStamp = CreateTimeStamp();
 	FText LogText = FText::FromString(Log);
-	FText Category = FText::FromString(SelectedCategory.ToString());
-	
-	BuildLogStruct(TimeStamp, LogText, Category, Color);
+	PopulateLogStruct(LogText, Category);
+}
+
+void UAnyPrintFunctionLibrary::PrintAnything(FName Category, FVector VectorLog)
+{
+	FText LogText = FText::FromString(FString::Printf(TEXT("X: %02f Y: %02f Z: %02f"), VectorLog.X, VectorLog.Y, VectorLog.Z));
+	PopulateLogStruct(LogText, Category);
+}
+
+void UAnyPrintFunctionLibrary::PrintAnything(FName Category, FRotator RotationLog)
+{
+	FText LogText = FText::FromString(FString::Printf(TEXT("P: %02f Y: %02f R: %02f"), RotationLog.Pitch, RotationLog.Yaw, RotationLog.Roll));
+	PopulateLogStruct(LogText, Category);
 }
 
 TArray<FName> UAnyPrintFunctionLibrary::GetCategoryKeys() const
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 
-	TArray<FName> Keys;
+	TArray<FName> CategoryKeys;
 	
 	for (auto& Category : Settings->Categories)
 	{
-		Keys.Add(Category.Key);
+		CategoryKeys.AddUnique(Category.Key);
 	}
 
-	return Keys;
+	return CategoryKeys;
 }
 
 FText UAnyPrintFunctionLibrary::CreateTimeStamp()
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 	
-	const FDateTime Now = FDateTime::Now();
+	FDateTime CurrentTIme = FDateTime::Now();
 
-	int32 Hour = Settings->bUse12hrTimeStamp ? Now.GetHour() : Now.GetHour12();
-	int32 Minute = Now.GetMinute();
-	int32 Second = Now.GetSecond();
+	int32 Hour = Settings->bUse12hrFormat ? CurrentTIme.GetHour12() : CurrentTIme.GetHour();
+	int32 Minute = CurrentTIme.GetMinute();
+	int32 Second = CurrentTIme.GetSecond();
 
-	const FString TimeStampString = FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second);
-	const FText TimeStamp = FText::FromString(TimeStampString);
-
+	FText TimeStamp = FText::FromString(FString::Printf(TEXT("%02d:%02d:%02d"), Hour, Minute, Second));
+	
 	return TimeStamp;
 }
 
-FColor UAnyPrintFunctionLibrary::GetCategoryColor(FName Category)
+FColor UAnyPrintFunctionLibrary::GetLogColor(FName Category)
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
-	const FColor Color = Settings->Categories.FindRef(Category);
-	return Color;
+
+	FColor LogColor = FColor::Transparent;
+	
+	for (auto& Color : Settings->Categories)
+	{
+		LogColor = Settings->Categories.FindRef(Category);
+	}
+
+	return LogColor;
 }
 
-
-void UAnyPrintFunctionLibrary::BuildLogStruct(FText TimeStamp, FText Log, FText Category, FColor Color)
+void UAnyPrintFunctionLibrary::PopulateLogStruct(FText Log, FName Category)
 {
-	LogInfo.TimeStamp = TimeStamp;
+	LogInfo.TimeStamp = CreateTimeStamp();
 	LogInfo.Log = Log;
-	LogInfo.Category = Category;
-	LogInfo.Color = Color;
+	LogInfo.Category = FText::FromString(Category.ToString());
+	LogInfo.Color = GetLogColor(Category);
 
 	OnLogCreated.ExecuteIfBound(LogInfo);
 }

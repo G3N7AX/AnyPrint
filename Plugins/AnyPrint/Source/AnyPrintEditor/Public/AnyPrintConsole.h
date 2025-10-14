@@ -4,48 +4,44 @@
 
 #include "CoreMinimal.h"
 #include "EditorUtilityWidget.h"
-#include "AnyPrintLibrary/Public/AnyPrintFunctionLibrary.h"
-#include "AnyPrintWidget.h"
 #include "AnyPrintConsole.generated.h"
 
-class UScrollBox;
+class UWidgetSwitcher;
 class UButton;
-class UComboBoxKey;
+class UTextBlock;
 
 /**
  * 
  */
+
 UCLASS()
 class ANYPRINTEDITOR_API UAnyPrintConsole : public UEditorUtilityWidget
 {
 	GENERATED_BODY()
 
+
 public:
-
-	virtual void NativePreConstruct() override;
-
-	/* Public Variables */
-	TArray<FLogInfo> LogEntries;
 	
-	UPROPERTY(meta = (BindWidget))
-	UScrollBox* LogScrollBox;
+	virtual void NativeConstruct() override;
 
 	UPROPERTY(meta = (BindWidget))
-	UButton* ClearLogsButton;
+	UWidgetSwitcher* PanelSwitcher;
 
 	UPROPERTY(meta = (BindWidget))
-	UComboBoxKey* FilterComboBox;
+	UButton* ConsoleButton;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UAnyPrintWidget> LogWidgetClass;
+	UPROPERTY(meta = (BindWidget))
+	UButton* SettingsButton;
 
-	/* Public Functions */
-	void OnLogReceived(FLogInfo LogInfo);
-	void CreateLogWidget(FLogInfo LogInfo);
-	
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* ConsoleButtonText;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* SettingsButtonText;
+
 	UFUNCTION()
-	void OnClearLogs();
+	void ShowIndexZero();
 
-private:
-	
+	UFUNCTION()
+	void ShowIndexOne();
 };

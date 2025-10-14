@@ -20,15 +20,15 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
-		{
-			"Name": "AnyPrintEditor",
-			"Type": "Editor",
-			"LoadingPhase": "PostEngineInit"
-		},
         {
-          "Name": "AnyPrintLibrary",
-          "Type": "Runtime",
-          "LoadingPhase": "Default"
+            "Name": "AnyPrintLibrary",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "AnyPrintEditor",
+            "Type": "Editor",
+            "LoadingPhase": "PostEngineInit"
         }
 	]
 }

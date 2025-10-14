@@ -38,9 +38,9 @@ public class AnyPrintEditor : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"UMG",
-				"UnrealEd",
 				"Blutility",
+				"UnrealEd",
+				"UMG",
 				"AnyPrintConfig",
 				"AnyPrintLibrary"
 				// ... add private dependencies that you statically link with here ...	

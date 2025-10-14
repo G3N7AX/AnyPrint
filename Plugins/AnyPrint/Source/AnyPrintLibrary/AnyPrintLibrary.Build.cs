@@ -36,7 +36,9 @@ public class AnyPrintLibrary : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
-				"AnyPrintConfig",
+				"Slate",
+				"SlateCore",
+				"AnyPrintConfig"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

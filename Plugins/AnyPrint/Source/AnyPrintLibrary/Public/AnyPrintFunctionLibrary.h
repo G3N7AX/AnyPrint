@@ -28,10 +28,10 @@ struct FLogInfo
 	FColor Color;
 
 	FLogInfo() :
-	TimeStamp(FText::FromString("")),
-	Log(FText::FromString("")),
-	Category(FText::FromString("")),
-	Color(FColor::White) {}
+	TimeStamp(FText::GetEmpty()),
+	Log(FText::GetEmpty()),
+	Category(FText::GetEmpty()),
+	Color(FColor::White) {};
 };
 
 DECLARE_DELEGATE_OneParam(FOnLogCreated, FLogInfo);
@@ -41,32 +41,22 @@ class ANYPRINTLIBRARY_API UAnyPrintFunctionLibrary : public UBlueprintFunctionLi
 {
 	GENERATED_BODY()
 
+
 public:
 
-	/* Declare Struct */
+	static FText CreateTimeStamp();
+	static FColor GetLogColor(FName Category);
+	static void PopulateLogStruct(FText Log, FName Category);
+
 	static FLogInfo LogInfo;
-
-	/* Declare Delegate */
 	static FOnLogCreated OnLogCreated;
-
-	UFUNCTION(BlueprintCallable, meta = (DevelopmentOnly))
-	static void PrintAnything(
-		UPARAM(meta = (GetOptions = "GetCategoryKeys"))
-		FName SelectedCategory,
-		FString Log
-		);
-
-	// static TArray<FName> GetCategoryKeys();
+	
+	UFUNCTION(BlueprintCallable, Category="AnyPrint", DisplayName="PrintAnything (String)")
+	static void PrintAnything(UPARAM(meta = (GetOptions = "GetCategoryKeys")) FName Category, FString Log);
+	static void PrintAnything(UPARAM(meta = (GetOptions = "GetCategoryKeys")) FName Category, FVector VectorLog);
+	static void PrintAnything(UPARAM(meta = (GetOptions = "GetCategoryKeys")) FName Category, FRotator RotationLog);
 	
 	UFUNCTION()
 	TArray<FName> GetCategoryKeys() const;
-
-	static FText CreateTimeStamp();
-	static FColor GetCategoryColor(FName Category);
-
-	static void BuildLogStruct(FText TimeStamp, FText Log, FText Category, FColor Color);
-	
-private:
-
 	
 };

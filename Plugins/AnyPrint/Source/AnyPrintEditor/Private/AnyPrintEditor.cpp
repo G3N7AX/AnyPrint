@@ -2,7 +2,7 @@
 
 #include "AnyPrintEditor.h"
 
-#define LOCTEXT_NAMESPACE "FAnyPrintConfigModule"
+#define LOCTEXT_NAMESPACE "FAnyPrintEditorModule"
 
 void FAnyPrintEditorModule::StartupModule()
 {

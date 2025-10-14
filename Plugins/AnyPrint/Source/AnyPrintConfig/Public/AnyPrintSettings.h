@@ -9,55 +9,94 @@
 /**
  * 
  */
+
 UCLASS(Config = Game, DefaultConfig, meta = (DisplayName = "AnyPrint"))
 class ANYPRINTCONFIG_API UAnyPrintSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	UAnyPrintSettings();
 
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent);
-
-	UPROPERTY(Config, EditAnywhere, meta = (
-		Category = "Appearance",
-		DisplayName = "Log Text Size",
-		ToolTip = "Default: 12"))
-	float LogTextSize = 12.f;
+	UPROPERTY(
+		Config,
+		VisibleDefaultsOnly,
+		Category = "Format",
+		meta = (
+			DisplayName = "Unify Text Size",
+			ToolTip = ""))
+	bool bUnifyTextSize = true;
 	
-	UPROPERTY(Config, EditAnywhere, meta = (
-		Category = "Appearance",
-		DisplayName = "Detail Text Size"))
-	float DetailTextSize;
-
-	UPROPERTY(Config, EditAnywhere, meta =(
-		Category = "Appearance",
+	UPROPERTY(
+	Config,
+	VisibleDefaultsOnly,
+	Category = "Format",
+	meta = (
 		DisplayName = "Wrap Log Text",
-		ToolTip = "When enabled, the Log Text Block will wrap the text if it exceeds the boundaries of the Console."))
-	bool bWrapLogText = false;
+		ToolTip = ""))
+	bool bWrapLogText = true;
+
+	UPROPERTY(
+	Config,
+	VisibleDefaultsOnly,
+	Category = "Format",
+	meta = (
+		DisplayName = "Use 12hr Format",
+		ToolTip = ""))
+	bool bUse12hrFormat = false;
+
+	UPROPERTY(
+	Config,
+	VisibleDefaultsOnly,
+	Category = "Display",
+	meta = (
+		DisplayName = "Log Text Size",
+		ToolTip = ""))
+	float LogTextSize = 12;
+
+	UPROPERTY(
+	Config,
+	VisibleDefaultsOnly,
+	Category = "Display",
+	meta = (
+		DisplayName = "Details Text Size",
+		ToolTip = ""))
+	float DetailsTextSize = 8;
+
+	UPROPERTY(
+	Config,
+	VisibleDefaultsOnly,
+	Category = "Display",
+	meta = (
+		DisplayName = "Console Text Size",
+		ToolTip = ""))
+	float ConsoleTextSize = 12;
+
+	UPROPERTY(
+	Config,
+	VisibleDefaultsOnly,
+	Category = "Behavior",
+	meta = (
+		DisplayName = "Scroll To Bottom",
+		ToolTip = ""))
+	bool bScrollToBottom = true;
 	
-	UPROPERTY(Config, EditAnywhere, meta =(
-		Category = "Appearance",
-		DisplayName = "Use 12hr TimeStamp",
-		ToolTip = "When enabled, TimeStamps are created in 12hr format."))
-	bool bUse12hrTimeStamp = false;
-
-	UPROPERTY(Config, EditAnywhere, meta =(
-		Category = "Appearance",
-		DisplayName = "Unify Text Sizes",
-		ToolTip = "When enabled, both Log Text Size and Detail Text Size will scale together, with Detail Text Size always set to roughly two-thirds of Log Text Size. When disabled, text sizes can be set manually and are no longer linked."))
-	bool bUnifyTextSizes = true;
-
-	UPROPERTY(Config, EditAnywhere, meta = (
-		Category = "Appearance",
-		DisplayName = "Max Log Count",
-		Tooltip = "The maximum amount of logs that the Console can hold (Default: 1000)"))
+	UPROPERTY(
+		Config,
+		VisibleDefaultsOnly,
+		Category = "Behavior",
+		meta = (
+			DisplayName = "Max Log Count",
+			ToolTip = ""))
 	int32 MaxLogCount = 1000;
-
-	UPROPERTY(Config, EditAnywhere)
+	
+	UPROPERTY(
+		Config,
+		EditAnywhere,
+		Category = "Categories",
+		meta = (
+			DisplayName = "Categories",
+			ToolTip = ""))
 	TMap<FName, FColor> Categories;
-
-	void UnifyLogTextSize();
-	void UnifyDetailTextSize();
 };
