@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AnyPrintLogManager.h"
+#include "AnyPrintManager.h"
 #include "AnyPrintSettings.h"
 #include "AnyPrintLibrary/Public/AnyPrintFunctionLibrary.h"
 #include "AnyPrintLog.h"
@@ -10,22 +10,22 @@
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 
-TWeakObjectPtr<UAnyPrintLogManager> UAnyPrintLogManager::ActiveManager = nullptr;
+TWeakObjectPtr<UAnyPrintManager> UAnyPrintManager::ActiveManager = nullptr;
 
-void UAnyPrintLogManager::NativeConstruct()
+void UAnyPrintManager::NativeConstruct()
 {
 	Super::NativeConstruct();
 	
-	ClearButton->OnClicked.AddDynamic(this, &UAnyPrintLogManager::ClearLogScrollBox);
+	ClearButton->OnClicked.AddDynamic(this, &UAnyPrintManager::ClearLogScrollBox);
 	
-	UAnyPrintFunctionLibrary::OnLogCreated.BindUObject(this, &UAnyPrintLogManager::OnLogCreated);
+	UAnyPrintFunctionLibrary::OnLogCreated.BindUObject(this, &UAnyPrintManager::OnLogCreated);
 
 	GetFontInfo();
 
 	ActiveManager = this;
 }
 
-void UAnyPrintLogManager::OnLogCreated(FLogInfo LogInfo)
+void UAnyPrintManager::OnLogCreated(FLogInfo LogInfo)
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 	
@@ -55,7 +55,7 @@ void UAnyPrintLogManager::OnLogCreated(FLogInfo LogInfo)
 	}
 }
 
-void UAnyPrintLogManager::UpdateLogScrollBox()
+void UAnyPrintManager::UpdateLogScrollBox()
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 	
@@ -91,13 +91,13 @@ void UAnyPrintLogManager::UpdateLogScrollBox()
 	}
 }
 
-void UAnyPrintLogManager::ClearLogScrollBox()
+void UAnyPrintManager::ClearLogScrollBox()
 {
 	LogEntries.Empty();
 	LogScrollBox->ClearChildren();
 }
 
-void UAnyPrintLogManager::GetFontInfo()
+void UAnyPrintManager::GetFontInfo()
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 
@@ -105,17 +105,17 @@ void UAnyPrintLogManager::GetFontInfo()
 	DetailsFontInfo = FCoreStyle::GetDefaultFontStyle("Regular", Settings->DetailsTextSize);
 }
 
-void UAnyPrintLogManager::SetLogTextFontInfo(float LogTextSize)
+void UAnyPrintManager::SetLogTextFontInfo(float LogTextSize)
 {
 	LogFontInfo.Size = LogTextSize;
 }
 
-void UAnyPrintLogManager::SetDetailsTextFontInfo(float DetailsTextSize)
+void UAnyPrintManager::SetDetailsTextFontInfo(float DetailsTextSize)
 {
 	DetailsFontInfo.Size = DetailsTextSize;
 }
 
-void UAnyPrintLogManager::SetLogTextInfo(UAnyPrintLog* LogWidget, FLogInfo LogInfo)
+void UAnyPrintManager::SetLogTextInfo(UAnyPrintLog* LogWidget, FLogInfo LogInfo)
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 	
@@ -125,12 +125,12 @@ void UAnyPrintLogManager::SetLogTextInfo(UAnyPrintLog* LogWidget, FLogInfo LogIn
 	LogWidget->LogText->SetAutoWrapText(Settings->bWrapLogText);
 }
 
-UAnyPrintLogManager* UAnyPrintLogManager::GetActiveManager()
+UAnyPrintManager* UAnyPrintManager::GetActiveManager()
 {
 		return ActiveManager.Get();
 }
 
-void UAnyPrintLogManager::ResizeLogScrollBox()
+void UAnyPrintManager::ResizeLogScrollBox()
 {
 	const UAnyPrintSettings* Settings = GetDefault<UAnyPrintSettings>();
 

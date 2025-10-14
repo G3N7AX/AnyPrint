@@ -4,7 +4,7 @@
 #include "AnyPrintMenu.h"
 #include "AnyPrintConfig/Public/AnyPrintSettings.h"
 #include "AnyPrintFunctionLibrary.h"
-#include "AnyPrintLogManager.h"
+#include "AnyPrintManager.h"
 #include "Components/EditableTextBox.h"
 
 
@@ -73,7 +73,7 @@ void UAnyPrintMenu::OnWrapLogTextChanged(bool IsChecked)
 	Settings->bWrapLogText = IsChecked;
 	Settings->TryUpdateDefaultConfigFile();
 
-	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
+	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
 	LogManager->UpdateLogScrollBox();
 }
@@ -113,7 +113,7 @@ void UAnyPrintMenu::OnLogTextChanged(const FText& Text, ETextCommit::Type Commit
 		UnifyDetailsTextSize();
 	}
 	
-	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
+	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 	
 	LogManager->SetLogTextFontInfo(LogTextSize);
 	LogManager->UpdateLogScrollBox();
@@ -138,7 +138,7 @@ void UAnyPrintMenu::OnDetailsTextChanged(const FText& Text, ETextCommit::Type Co
 		UnifyLogTextSize();
 	}
 
-	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
+	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
 	LogManager->SetDetailsTextFontInfo(DetailsTextSize);
 	LogManager->UpdateLogScrollBox();
@@ -165,7 +165,7 @@ void UAnyPrintMenu::OnMaxLogCountChanged(const FText& Text, ETextCommit::Type Co
 
 	// UAnyPrintFunctionLibrary::PrintAnything(FName("Medium"), MaxLogCount);
 
-	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
+	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
 	LogManager->ResizeLogScrollBox();
 }
@@ -183,7 +183,7 @@ void UAnyPrintMenu::UnifyLogTextSize()
 
 	LogTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.2f"), Settings->LogTextSize)));
 
-	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
+	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
 	LogManager->SetLogTextFontInfo(Settings->LogTextSize);
 }
@@ -201,7 +201,7 @@ void UAnyPrintMenu::UnifyDetailsTextSize()
 	
 	DetailsTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Settings->DetailsTextSize)));
 
-	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
+	UAnyPrintManager* LogManager = UAnyPrintManager::GetActiveManager();
 
 	LogManager->SetDetailsTextFontInfo(Settings->DetailsTextSize);
 }

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "AnyPrintLog.h"
-#include "AnyPrintLogManager.generated.h"
+#include "AnyPrintManager.generated.h"
 
 class UScrollBox;
 class UButton;
@@ -19,7 +19,7 @@ struct FSlateFontInfo;
  */
 
 UCLASS()
-class ANYPRINTEDITOR_API UAnyPrintLogManager : public UUserWidget
+class ANYPRINTEDITOR_API UAnyPrintManager : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -64,8 +64,8 @@ public:
 	void SetConsoleTextFontInfo(float ConsoleTextSize);
 	void SetLogTextInfo(UAnyPrintLog* LogWidget, FLogInfo LogInfo);
 
-	static TWeakObjectPtr<UAnyPrintLogManager> ActiveManager;
-	static UAnyPrintLogManager* GetActiveManager();
+	static TWeakObjectPtr<UAnyPrintManager> ActiveManager;
+	static UAnyPrintManager* GetActiveManager();
 
 	void ResizeLogScrollBox();
 };
