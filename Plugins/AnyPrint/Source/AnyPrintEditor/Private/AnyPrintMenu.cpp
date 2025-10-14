@@ -94,12 +94,6 @@ void UAnyPrintMenu::OnScrollToBottomChanged(bool IsChecked)
 	Settings->TryUpdateDefaultConfigFile();
 }
 
-
-
-
-
-
-
 void UAnyPrintMenu::OnLogTextChanged(const FText& Text, ETextCommit::Type CommitMethod)
 {
 	UAnyPrintSettings* Settings = GetMutableDefault<UAnyPrintSettings>();
@@ -191,9 +185,7 @@ void UAnyPrintMenu::UnifyLogTextSize()
 
 	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
 
-	LogManager->SetDetailsTextFontInfo(Settings->LogTextSize);
-	
-	UAnyPrintFunctionLibrary::PrintAnything(FName("Medium"), FString::Printf(TEXT("%.2f"), Settings->LogTextSize));
+	LogManager->SetLogTextFontInfo(Settings->LogTextSize);
 }
 
 void UAnyPrintMenu::UnifyDetailsTextSize()
@@ -212,6 +204,4 @@ void UAnyPrintMenu::UnifyDetailsTextSize()
 	UAnyPrintLogManager* LogManager = UAnyPrintLogManager::GetActiveManager();
 
 	LogManager->SetDetailsTextFontInfo(Settings->DetailsTextSize);
-	
-	UAnyPrintFunctionLibrary::PrintAnything(FName("Medium"), FString::Printf(TEXT("%.2f"), Settings->DetailsTextSize));
 }
