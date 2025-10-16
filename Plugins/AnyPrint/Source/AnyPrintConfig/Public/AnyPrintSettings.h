@@ -67,15 +67,6 @@ public:
 	UPROPERTY(
 	Config,
 	VisibleDefaultsOnly,
-	Category = "Display",
-	meta = (
-		DisplayName = "Console Text Size",
-		ToolTip = ""))
-	float ConsoleTextSize = 12;
-
-	UPROPERTY(
-	Config,
-	VisibleDefaultsOnly,
 	Category = "Behavior",
 	meta = (
 		DisplayName = "Scroll To Bottom",

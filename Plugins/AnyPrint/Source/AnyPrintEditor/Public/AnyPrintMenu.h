@@ -57,12 +57,6 @@ public:
 	UEditableTextBox* DetailsTextSizeTextBox;
 
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* ConsoleTextSizeText;	
-
-	UPROPERTY(meta = (BindWidget))
-	UEditableTextBox* ConsoleTextSizeTextBox;
-
-	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Use12hrFormatText;
 
 	UPROPERTY(meta = (BindWidget))
@@ -97,9 +91,6 @@ public:
 
 	UFUNCTION()
 	void OnDetailsTextChanged(const FText& Text, ETextCommit::Type CommitMethod);
-
-	UFUNCTION()
-	void OnConsoleTextChanged(const FText& Text, ETextCommit::Type CommitMethod);
 
 	UFUNCTION()
 	void OnMaxLogCountChanged(const FText& Text, ETextCommit::Type CommitMethod);

@@ -45,7 +45,7 @@ public:
 	UPROPERTY(meta = (BindWidgetOptional))
 	UComboBoxKey* FilterComboBox;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AnyPrint")
+	UPROPERTY(EditDefaultsOnly, Category = "AnyPrint", meta = (DisplayName = "AnyPrintLog Class"))
 	TSubclassOf<UAnyPrintLog> AnyPrintLogClass;
 
 	UFUNCTION()
@@ -61,7 +61,6 @@ public:
 	void GetFontInfo();
 	void SetLogTextFontInfo(float LogTextSize);
 	void SetDetailsTextFontInfo(float DetailsTextSize);
-	void SetConsoleTextFontInfo(float ConsoleTextSize);
 	void SetLogTextInfo(UAnyPrintLog* LogWidget, FLogInfo LogInfo);
 
 	static TWeakObjectPtr<UAnyPrintManager> ActiveManager;

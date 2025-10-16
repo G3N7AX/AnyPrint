@@ -10,6 +10,8 @@ class UWidgetSwitcher;
 class UButton;
 class UTextBlock;
 
+struct FSlateFontInfo;
+
 /**
  * 
  */
@@ -38,6 +40,8 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* SettingsButtonText;
+
+	FSlateFontInfo ConsoleFontInfo;
 
 	UFUNCTION()
 	void ShowIndexZero();

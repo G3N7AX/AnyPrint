@@ -27,7 +27,6 @@ void UAnyPrintMenu::BindOptions()
 	
 	LogTextSizeTextBox->OnTextCommitted.AddDynamic(this, &UAnyPrintMenu::OnLogTextChanged);
 	DetailsTextSizeTextBox->OnTextCommitted.AddDynamic(this, &UAnyPrintMenu::OnDetailsTextChanged);
-	ConsoleTextSizeTextBox->OnTextCommitted.AddDynamic(this, &UAnyPrintMenu::OnConsoleTextChanged);
 	MaxLogCountTextBox->OnTextCommitted.AddDynamic(this, &UAnyPrintMenu::OnMaxLogCountChanged);
 }
 
@@ -47,10 +46,6 @@ void UAnyPrintMenu::GetDefaultOptions()
 	DetailsTextSizeTextBox->SetMinDesiredWidth(50.f);
 	DetailsTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Settings->DetailsTextSize)));
 	DetailsTextSizeTextBox->SetJustification(ETextJustify::Center);
-
-	ConsoleTextSizeTextBox->SetMinDesiredWidth(50.f);
-	// ConsoleTextSizeTextBox->SetText(FText::FromString(FString::Printf(TEXT("%.1f"), Settings->ConsoleTextSize)));
-	ConsoleTextSizeTextBox->SetJustification(ETextJustify::Center);
 
 	MaxLogCountTextBox->SetMinDesiredWidth(50.f);
 	MaxLogCountTextBox->SetText(FText::FromString(FString::Printf(TEXT("%i"), Settings->MaxLogCount)));
@@ -165,17 +160,6 @@ void UAnyPrintMenu::OnDetailsTextChanged(const FText& Text, ETextCommit::Type Co
 
 	LogManager->SetDetailsTextFontInfo(DetailsTextSize);
 	LogManager->UpdateLogScrollBox();
-}
-
-void UAnyPrintMenu::OnConsoleTextChanged(const FText& Text, ETextCommit::Type CommitMethod)
-{
-	UAnyPrintSettings* Settings = GetMutableDefault<UAnyPrintSettings>();
-
-	FString ConsoleTextSize = Text.ToString();
-	
-	Settings->ConsoleTextSize = FCString::Atof(*ConsoleTextSize);
-
-	UAnyPrintFunctionLibrary::PrintAnything(FName("Medium"), ConsoleTextSize);
 }
 
 void UAnyPrintMenu::OnMaxLogCountChanged(const FText& Text, ETextCommit::Type CommitMethod)
